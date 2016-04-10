@@ -53,7 +53,16 @@ class Post
 
   def self.find_by_title(title)
     results = DB.execute("SELECT * FROM posts WHERE title = ?", title)
-    self.new_from_db(results[0])
+    results.size == 0 ? "Non Exixting Data" : self.new_from_db(results[0])
+  end
+
+  def self.find(id)
+    results = DB.execute("SELECT * FROM posts WHERE id = ?", id)
+    results.size == 0 ? "Non Exixting Data" : self.new_from_db(results[0])
+  end
+
+  def self.destroy(id)
+    DB.execute("DELETE FROM posts WHERE id = ?", id)
   end
 
   private
