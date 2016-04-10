@@ -51,6 +51,11 @@ class Post
     # end
   end
 
+  def self.find_by_title(title)
+    results = DB.execute("SELECT * FROM posts WHERE title = ?", title)
+    self.new_from_db(results[0])
+  end
+
   private
     def insert
       sql = <<-SQL
@@ -58,6 +63,7 @@ class Post
       SQL
 
       DB.execute(sql, self.title, self.content)
+      @id = DB.execute("SELECT MAX(id) FROM posts")[0][0]
     end
 
     def update
